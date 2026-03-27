@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "email-auto-forwarder"
+version = "0.1.0"
+description = "Automatically forwards selected incoming emails using IMAP IDLE."
+readme = "README.md"
+requires-python = ">=3.8"
+license = { file = "LICENSE" }
+dependencies = [
+    "IMAPClient>=3.0.1,<4",
+    "python-dotenv>=1.0,<2",
+]
+
+[tool.setuptools]
+py-modules = [
+    "config",
+    "forwarder",
+    "imap_idle",
+    "main",
+    "state",
+    "utils",
+]

@@ -16,7 +16,7 @@ from config import (
 )
 from state import load_state, save_state
 from forwarder import forward_mail
-from utils import get_sender
+from utils import get_sender, sender_matches
 
 
 class MailWatcher:
@@ -37,7 +37,7 @@ class MailWatcher:
 
             sender = get_sender(msg)
 
-            if sender not in TARGET_SENDERS:
+            if not sender_matches(sender, TARGET_SENDERS):
                 continue
 
             try:

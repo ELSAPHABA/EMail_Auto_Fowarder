@@ -1,5 +1,6 @@
 # utils.py
 
+from fnmatch import fnmatchcase
 from email.header import decode_header
 from email.utils import parseaddr
 
@@ -17,6 +18,10 @@ def decode_mime(value):
 def get_sender(msg):
     _, addr = parseaddr(msg.get("From", ""))
     return addr.lower()
+
+
+def sender_matches(sender, patterns):
+    return any(fnmatchcase(sender, pattern) for pattern in patterns)
 
 
 def extract_text(msg):

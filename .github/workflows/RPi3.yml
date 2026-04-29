@@ -58,10 +58,12 @@ jobs:
             FORWARD_TO=${{ secrets.FORWARD_TO }}
             TARGET_SENDERS=${{ secrets.TARGET_SENDERS }}
             IMAP_HOST=imap.naver.com
+            IMAP_MAILBOX=INBOX
             SMTP_HOST=smtp.naver.com
             SMTP_PORT=465
             STATE_FILE=data/forwarded_uids.json
-            IDLE_TIMEOUT=540
+            POLL_INTERVAL=20
+            RECONNECT_DELAY=5
             EOF
 
             # 상태 파일을 유지하면서 컨테이너를 다시 빌드하고 재시작합니다.

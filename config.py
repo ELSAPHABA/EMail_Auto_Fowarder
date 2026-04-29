@@ -29,8 +29,10 @@ FORWARD_TO = _require_env("FORWARD_TO")
 TARGET_SENDERS = _parse_target_senders(_require_env("TARGET_SENDERS"))
 
 IMAP_HOST = os.getenv("IMAP_HOST", "imap.naver.com").strip()
+IMAP_MAILBOX = os.getenv("IMAP_MAILBOX", "INBOX").strip()
 SMTP_HOST = os.getenv("SMTP_HOST", "smtp.naver.com").strip()
 SMTP_PORT = int(os.getenv("SMTP_PORT", "465"))
 
 STATE_FILE = os.getenv("STATE_FILE", "forwarded_uids.json").strip()
-IDLE_TIMEOUT = int(os.getenv("IDLE_TIMEOUT", "540"))
+POLL_INTERVAL = int(os.getenv("POLL_INTERVAL", "20"))
+RECONNECT_DELAY = int(os.getenv("RECONNECT_DELAY", "5"))

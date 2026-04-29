@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "email-auto-forwarder"
 version = "0.1.0"
-description = "Automatically forwards selected incoming emails using IMAP IDLE."
+description = "Automatically forwards selected incoming emails using IMAP polling."
 readme = "README.md"
 requires-python = ">=3.8"
 license = { file = "LICENSE" }
@@ -18,7 +18,7 @@ dependencies = [
 py-modules = [
     "config",
     "forwarder",
-    "imap_idle",
+    "imap_polling",
     "main",
     "state",
     "utils",

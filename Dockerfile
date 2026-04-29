@@ -6,7 +6,7 @@ ENV PYTHONUNBUFFERED=1
 WORKDIR /app
 
 COPY pyproject.toml README.md LICENSE ./
-COPY config.py forwarder.py imap_idle.py main.py state.py utils.py ./
+COPY config.py forwarder.py imap_polling.py main.py state.py utils.py ./
 
 RUN pip install --no-cache-dir .
 

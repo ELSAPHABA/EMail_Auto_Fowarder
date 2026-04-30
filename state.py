@@ -8,10 +8,7 @@ from config import STATE_FILE
 
 def _empty_state():
     return {
-        "uidvalidity": None,
-        "highestmodseq": None,
-        "last_seen_uid": 0,
-        "processed_uids": set(),
+        "last_uid": 0,
     }
 
 
@@ -24,26 +21,21 @@ def load_state():
 
     if isinstance(data, list):
         state = _empty_state()
-        state["processed_uids"] = {str(uid) for uid in data}
+        state["last_uid"] = max((int(uid) for uid in data), default=0)
         return state
 
     state = _empty_state()
-    state["uidvalidity"] = data.get("uidvalidity")
-    state["highestmodseq"] = data.get("highestmodseq")
-    state["last_seen_uid"] = int(data.get("last_seen_uid") or 0)
-    state["processed_uids"] = {
-        str(uid)
-        for uid in data.get("processed_uids", [])
-    }
+    state["last_uid"] = int(
+        data.get("last_uid")
+        or data.get("last_seen_uid")
+        or 0
+    )
     return state
 
 
 def save_state(state):
     data = {
-        "uidvalidity": state["uidvalidity"],
-        "highestmodseq": state["highestmodseq"],
-        "last_seen_uid": state["last_seen_uid"],
-        "processed_uids": sorted(state["processed_uids"], key=int),
+        "last_uid": int(state["last_uid"]),
     }
 
     with open(STATE_FILE, "w", encoding="utf-8") as f:

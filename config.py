@@ -16,10 +16,17 @@ def _require_env(name):
 
 def _parse_target_senders(value):
     return {
-        sender.strip().lower()
+        _normalize_sender_pattern(sender)
         for sender in value.split(",")
         if sender.strip()
     }
+
+
+def _normalize_sender_pattern(sender):
+    sender = sender.strip().lower()
+    if sender.startswith("<") and sender.endswith(">"):
+        sender = sender[1:-1].strip()
+    return sender
 
 
 NAVER_ID = _require_env("NAVER_ID")
@@ -34,5 +41,5 @@ SMTP_HOST = os.getenv("SMTP_HOST", "smtp.naver.com").strip()
 SMTP_PORT = int(os.getenv("SMTP_PORT", "465"))
 
 STATE_FILE = os.getenv("STATE_FILE", "forwarded_uids.json").strip()
-POLL_INTERVAL = int(os.getenv("POLL_INTERVAL", "20"))
+POLL_INTERVAL = int(os.getenv("POLL_INTERVAL", "30"))
 RECONNECT_DELAY = int(os.getenv("RECONNECT_DELAY", "5"))

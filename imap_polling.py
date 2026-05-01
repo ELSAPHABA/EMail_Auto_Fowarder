@@ -3,7 +3,7 @@
 import email
 import ssl
 import time
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 
 from imapclient import IMAPClient
 
@@ -20,6 +20,9 @@ from config import (
 from forwarder import forward_mail
 from state import load_state, save_state
 from utils import get_sender, imap_from_terms, sender_matches
+
+
+KST = timezone(timedelta(hours=9), "KST")
 
 
 class MailWatcher:
@@ -49,7 +52,7 @@ class MailWatcher:
                 time.sleep(POLL_INTERVAL)
 
     def _poll_once(self, server):
-        checked_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        checked_at = datetime.now(KST).strftime("%Y-%m-%d %H:%M:%S %Z")
         last_uid = self.state["last_uid"]
         print(f"[Polling] {checked_at} mailbox={IMAP_MAILBOX}, last_uid={last_uid}")
 

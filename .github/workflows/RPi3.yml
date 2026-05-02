@@ -62,7 +62,7 @@ jobs:
             SMTP_HOST=smtp.naver.com
             SMTP_PORT=465
             STATE_FILE=data/forwarded_uids.json
-            POLL_INTERVAL=20
+            POLL_INTERVAL=30
             RECONNECT_DELAY=5
             EOF
 

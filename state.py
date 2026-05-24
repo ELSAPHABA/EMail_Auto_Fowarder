@@ -6,15 +6,16 @@ import os
 from config import STATE_FILE
 
 
-def _empty_state():
+def _empty_state(is_new=False):
     return {
         "last_uid": 0,
+        "is_new": is_new,
     }
 
 
 def load_state():
     if not os.path.exists(STATE_FILE):
-        return _empty_state()
+        return _empty_state(is_new=True)
 
     with open(STATE_FILE, "r", encoding="utf-8") as f:
         data = json.load(f)
@@ -37,6 +38,10 @@ def save_state(state):
     data = {
         "last_uid": int(state["last_uid"]),
     }
+
+    state_dir = os.path.dirname(STATE_FILE)
+    if state_dir:
+        os.makedirs(state_dir, exist_ok=True)
 
     with open(STATE_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)

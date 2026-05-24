@@ -60,6 +60,13 @@ class MailWatcher:
         uidnext = self._response_int(select_response, b"UIDNEXT")
         search_end_uid = uidnext - 1 if uidnext else last_uid
 
+        if self.state.get("is_new"):
+            self.state["last_uid"] = max(0, search_end_uid)
+            self.state["is_new"] = False
+            save_state(self.state)
+            print(f"[초기화] 최초 실행으로 현재 마지막 UID={self.state['last_uid']} 저장")
+            return
+
         if search_end_uid <= last_uid:
             print("[Polling] 새 UID 없음")
             return

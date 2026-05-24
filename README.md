@@ -10,7 +10,8 @@
 
 2. 상태 파일 로드
    - `STATE_FILE`에서 마지막으로 처리한 UID인 `last_uid`를 읽습니다.
-   - 상태 파일이 없으면 `last_uid=0`부터 시작합니다.
+   - 상태 파일이 없으면 완전 최초 실행으로 판단합니다.
+   - 완전 최초 실행에서는 현재 메일함의 가장 최근 UID를 `last_uid`로 저장하고, 기존 메일은 포워딩하지 않습니다.
    - 이전 형식의 상태 파일이 있어도 가능한 범위에서 `last_uid`로 변환합니다.
 
 3. 발신자 검색어 준비
@@ -80,6 +81,12 @@ FETCH <UID> BODY[]
     - 정상 처리 또는 스킵이 끝난 UID를 기준으로 `last_uid`를 갱신합니다.
     - 후보가 없더라도 이번 검색 범위의 마지막 UID까지 확인한 것으로 보고 저장합니다.
     - 포워딩 중 오류가 나면 실패한 UID 직전까지만 저장해 다음 Polling에서 다시 시도합니다.
+
+## Docker 상태 저장
+
+- 배포 워크플로는 Docker named volume인 `email-auto-forwarder-data`를 `/app/data`에 마운트합니다.
+- 컨테이너는 `STATE_FILE=data/forwarded_uids.json`에 상태를 저장합니다.
+- `docker-entrypoint.sh`는 상태 파일이 들어갈 디렉터리를 컨테이너 시작 시 생성합니다.
 
 ## 환경 변수
 

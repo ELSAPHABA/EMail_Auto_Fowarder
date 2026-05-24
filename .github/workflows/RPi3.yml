@@ -45,6 +45,7 @@ jobs:
             APP_DIR=/home/elsaphaba/HongDev/EMail_Auto_Fowarder
             CONTAINER_NAME=email-auto-forwarder
             IMAGE_NAME=email-auto-forwarder
+            VOLUME_NAME=email-auto-forwarder-data
 
             # 서버에 있는 저장소 코드를 최신 상태로 갱신합니다.
             cd "$APP_DIR"
@@ -66,12 +67,14 @@ jobs:
             RECONNECT_DELAY=5
             EOF
 
-            # 상태 파일을 유지하면서 컨테이너를 다시 빌드하고 재시작합니다.
+            # 상태 파일을 Docker named volume에 유지하면서 컨테이너를 다시 빌드하고 재시작합니다.
             docker build -t "$IMAGE_NAME" .
+            docker volume create "$VOLUME_NAME"
+
             docker rm -f "$CONTAINER_NAME" || true
             docker run -d \
               --name "$CONTAINER_NAME" \
               --restart unless-stopped \
               --env-file .env \
-              -v "$APP_DIR/data:/app/data" \
+              -v "$VOLUME_NAME:/app/data" \
               "$IMAGE_NAME"
